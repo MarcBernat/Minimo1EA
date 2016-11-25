@@ -1,4 +1,4 @@
-angular.module('Minimo1App').controller('ApiCtrl',['$scope','$http','$routeParams','$filter',function($scope, $http, $routeParams, $filter){
+angular.module('Minimo1App').controller('ApiCtrl',['$scope','$http','$routeParams',function($scope, $http, $routeParams){
     $scope.NewStudent = {};
     $scope.addContact = false;
     $scope.NewContact = {};
@@ -133,9 +133,10 @@ angular.module('Minimo1App').controller('ApiCtrl',['$scope','$http','$routeParam
 
     $scope.AddStudentinSubject = function(id, stu){
         console.log(stu);
-            $http.post('api/subject/studentadd/' + id, stu)
+            $http.put('api/subject/studentadd/' + id, stu)
                 .success(function(data) {
                     console.log(data);
+                    $scope.subjects = {};
                     $scope.subjects = data;
                 })
                 .error(function(data) {
@@ -172,6 +173,7 @@ angular.module('Minimo1App').controller('ApiCtrl',['$scope','$http','$routeParam
         console.log($scope.NewSearch);
         $http.get('/api/subjects/find/' + $scope.newfilter +'/' +  $scope.NewSearch.text)
             .success(function(data){
+                $scope.subjects = {};
                 $scope.subjects = data;
                 console.log(data);
                 $scope.newfilter = null;
@@ -185,6 +187,7 @@ angular.module('Minimo1App').controller('ApiCtrl',['$scope','$http','$routeParam
         RemoveOrderLength();
         $http.get('/api/subjects/find/' + filter +'/' +filter)
             .success(function(data){
+                $scope.subjects = {};
                 $scope.subjects = data;
                 console.log(data);
                 $scope.newfilter = null;
@@ -203,6 +206,7 @@ angular.module('Minimo1App').controller('ApiCtrl',['$scope','$http','$routeParam
     $scope.Clean = function(){
         $http.get('/api/subjects')
             .success(function(data) {
+                $scope.subjects = {};
                 $scope.subjects = data;
                 console.log(data);
 

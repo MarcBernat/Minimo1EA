@@ -170,7 +170,7 @@ router.delete('/subject/:subject_id', function(req, res) {
 });
 
 //Add a contact Work
-router.post('/subject/studentadd/:id', function(req, res) {
+router.put('/subject/studentadd/:id', function(req, res) {
     var query = {_id: req.params.id};
     var update = {$addToSet : {"students" : req.body._id}};
     var options = {};
