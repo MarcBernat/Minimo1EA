@@ -1,0 +1,106 @@
+<div class="user-panel row" ng-controller="ApiCtrl">
+<div class="col-md-12">
+
+    <!-- Buscador -->
+    <form class="navbar-form" role="search">
+        <div class='container-fluid panel-body row center-block'>
+            <div class="center-block row text-center">
+                <input type="text" placeholder="Buscador" ng-model="NewSearch.text" class="form-control">
+                <label for="sel1">Filtro:</label>
+                <select id="sel1" class="form-control" ng-model="newfilter">
+                    <option value="name">Nombre</option>
+                    <option value="period">Periodo</option>
+                </select>
+            </div>
+            <br>
+            <div class="center-block row btn-group">
+                <button type="button" class="btn btn-block" ng-disabled="!NewSearch.text || !newfilter" ng-click="SearchSubjects()">Buscar</button> <button type="button" class="btn btn-block" ng-click="Clean()">Limpiar</button>
+            </div>
+
+        </div>
+    </form>
+
+    <div class="col-md-12">
+        <div class="panel panel-primary row">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Subjects</div>
+            <div class="panel-body row">
+                <div class="col-md-4">
+                    <label>Name:</label>
+                    <input class="form-control" type="text" ng-model="NewSubject.name" required>
+                </div>
+                <div class="col-md-4">
+                    <label>Periodo:</label>
+                    <input class="form-control" type="text" ng-model="NewSubject.when" required>
+                </div>
+                <div class="col-md-4">
+                    <br>
+                    <button type="button" class="btn btn-success btn-block" ng-click="CreateSubject()"  ng-disabled="!NewSubject.name">Nuevo</button>
+                </div>
+            </div>
+
+            <div class="row center-block">
+                <div class="col-md-12 center-block">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="OrderSubjects('alpha')">Ordenar por alfabético</button>
+                        <button type="button" class="btn btn-primary" ng-click="orderQuery = '-students.length'">Ordenar por número de alumnos</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name:</th>
+                        <th>Periodo:</th>
+                        <th># Matriculados:</th>
+                        <th>Estudiantes Matriculados:</th>
+                    </tr>
+                    </thead>
+
+                    <tbody ng-repeat="(sbuIndex, sub) in subjects | orderBy : orderQuery">
+                    <tr>
+                        <td>{{sub.name}}</td>
+                        <td>{{sub.when}}</td>
+                        <td>{{sub.students.length}}</td>
+                        <td ng-switch="sub.students">
+                            <div ng-switch-default>
+                                <ul class="list-group" ng-repeat="substudents in sub.students">
+                                    <li class="list-group-item" ng-show="substudents != undefined">
+                                        Name: {{substudents.name}}
+                                        <br>
+                                        Address: {{substudents.address}}
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div ng-switch-when="undefined">Sin estudiantes</div>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" ng-click="DeleteSubject(sub._id)"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Eliminar</button>
+                            <button class="btn btn-info" ng-click="showAddStudent(sbuIndex)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Añadir Estudiante</button>
+                            <div ng-show="isShowingStudents(sbuIndex)">
+                                <br>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <li class="list-group-item" ng-repeat="(stuIndex, stu) in students | orderBy:'name'">
+                                            Nombre: {{stu.name}}
+                                            <br>
+                                            <button type="button" class="btn btn-success btn-block"
+                                                    ng-click="AddStudentinSubject(sub._id, stu)">Añadir</button>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

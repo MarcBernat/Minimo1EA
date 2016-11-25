@@ -1,0 +1,81 @@
+<div class="user-panel row" ng-controller="ApiCtrl">
+    <div class="col-md-12">
+        <div class="col-md-12">
+        <div class="panel panel-primary row">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Students</div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <label>Name:</label>
+                    <input class="form-control" type="text" ng-model="NewStudent.name" required>
+                </div>
+                <div class="col-md-4">
+                    <label>Address:</label>
+                    <input class="form-control" type="text" ng-model="NewStudent.address" required>
+                </div>
+                <div class="col-md-4">
+                    <br>
+                    <button type="button" class="btn btn-success btn-block" ng-click="CreateStudent()"  ng-disabled="!NewStudent.name || !NewStudent.address">Nuevo</button>
+                    <button type="button" class="btn btn-success btn-warning btn-block" ng-click="UpdateStudent()" ng-disabled="!NewStudent.name || !NewStudent.address">Editar</button>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name:</th>
+                        <th>Address:</th>
+                        <th>Contacts:</th>
+                        <th>Actions:</th>
+                    </tr>
+                    </thead>
+                <tbody ng-repeat="(stuIndex, stu) in students | orderBy:'name'">
+                <tr>
+                    <td>{{stu.name}}</td>
+                    <td>{{stu.address}}</td>
+                    <td ng-switch="stu.contacts">
+                        <div ng-switch-default>
+                            <ul class="list-group" ng-repeat="cont in stu.contacts">
+                                <li class="list-group-item" ng-show="cont.home != undefined">Home: {{cont.home}}</li>
+                                <li class="list-group-item" ng-show="cont.work != undefined">Work: {{cont.work}}</li>
+                            </ul>
+                        </div>
+                        <div ng-switch-when="undefined">Sin contactos</div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="DeleteStudent(stu._id)"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Eliminar</button>
+                        <button class="btn btn-info" ng-click="showAddContact(stuIndex)"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Añadir Contacto</button>
+                        <button class="btn" ng-click="UseStudent(stu)"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>Utilizar</button>
+                        <div ng-show="isShowing(stuIndex)">
+                            <br>
+                            <div class="col-md-12">
+                                <div class="radio-inline">
+                                    <label><input type="radio" value="Home" ng-model="NewContact.typeContact" checked>Home</label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label><input type="radio" value="Work" ng-model="NewContact.typeContact">Work</label>
+                                </div>
+                                <div class="row">
+                                    <label>Number:</label><input class="form-control" type="text" ng-model="NewContact.number" required>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <button type="button" class="btn btn-success btn-block"
+                                            ng-click="AddContact(stu._id)" ng-disabled="!NewContact.number">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+
+                </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+</div>
