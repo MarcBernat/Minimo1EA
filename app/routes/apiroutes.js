@@ -9,13 +9,31 @@ var router = express.Router();
 // GET Students
 router.get('/students', function(req, res) {
   // use mongoose to get all users in the database
-  Student.find(function(err, Student) {
-    // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if (err)
-      res.send(err)
-    res.send(Student);
+    var name = [];
+  Student.find(function(err, student) {
+      // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+      if (err)
+          res.send(err);
+      res.send(student);
   });
 });
+/**
+router.get('/matriculadas', function(req, res) {
+    // use mongoose to get all users in the database
+    name = [];
+    Subjects.find({students: {_id: req.body._id}}, function (err, subjects) {
+        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+        if (err)
+            res.send(err)
+        //Inicio
+        subjects.forEach(function (sub) {
+            name.push(sub.name)
+        });
+        console.log(name);
+        res.send(name);
+    })
+});
+*/
 // GET Subjects
 router.get('/subjects', function(req, res) {
     // use mongoose to get all users in the database
@@ -248,6 +266,41 @@ router.get('/subjects/find/:type/:text', function(req, res) {
         }
         default:{
             Subjects.find({}).populate('students').exec().then(function(err, subjects) {
+                // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+                if (err)
+                    res.send(err)
+                res.send(subjects);
+            });
+            break;
+        }
+    }
+});
+
+// GET Students
+router.get('/students/find/:type/:text', function(req, res) {
+    switch(req.params.type){
+        case 'name':
+        {
+            Student.find({'name': req.params.text}, function(err, subjects) {
+                // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+                if (err)
+                    res.send(err)
+                res.send(subjects);
+            });
+            break;
+        }
+        case 'alpha':
+        {
+            Student.find({}).sort({name: 'asc'}).exec().then(function(err, subjects) {
+                // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+                if (err)
+                    res.send(err)
+                res.send(subjects);
+            });
+            break;
+        }
+        default:{
+            Student.find({}).exec().then(function(err, subjects) {
                 // if there is an error retrieving, send the error. nothing after res.send(err) will execute
                 if (err)
                     res.send(err)
