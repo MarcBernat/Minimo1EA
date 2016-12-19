@@ -58,6 +58,19 @@ router.post('/student', function(req, res) {
   });
 });
 
+// Post Student
+router.post('/studentid', function(req, res) {
+    console.log(req.body);
+    Student.create({
+        name:req.body.name,
+        address:req.body.address
+    }, function(err, user) {
+        if (err)
+            res.send(err);
+        res.send(user);
+    });
+});
+
 // Post Subject
 router.post('/subject', function(req, res) {
     console.log(req.body);
